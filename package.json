@@ -1,0 +1,27 @@
+{
+  "name": "vnnative3-purchase",
+  "version": "1.0.0",
+  "description": "Vn native 3 purchase plugin",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build":"tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steveleetn91/vnnative3-purchase.git"
+  },
+  "keywords": [
+    "vnf3",
+    "vnnative3"
+  ],
+  "author": "steve lee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steveleetn91/vnnative3-purchase/issues"
+  },
+  "homepage": "https://github.com/steveleetn91/vnnative3-purchase#readme",
+  "dependencies": {
+    "typescript": "^4.6.2"
+  }
+}
