@@ -1,6 +1,6 @@
 {
   "name": "vnnative3-purchase",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Vn native 3 purchase plugin",
   "main": "dist/index.js",
   "scripts": {

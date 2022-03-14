@@ -1,6 +1,30 @@
-import Vnnative3PurchaseInterface from "./Vnnative3Purchase.interface";
-
-export default class Vnnative3Purchase implements Vnnative3PurchaseInterface {
+import {Vnnative3PurchaseHasProdOptionInterface, Vnnative3PurchaseInterface, Vnnative3PurchaseWhenInterface} from "./Vnnative3Purchase.interface";
+class Vnnative3PurchaseWhen implements Vnnative3PurchaseWhenInterface {
+    private mode : any;
+    constructor(mode : any){
+        this.mode = mode;
+    }
+    hasProduct(getProdInfo: Function): Vnnative3PurchaseWhenInterface {
+        this.mode.update((production : Vnnative3PurchaseHasProdOptionInterface) => {
+            return getProdInfo(production);
+        })
+        return this;
+    }
+    approved(getProdInfo: Function): Vnnative3PurchaseWhenInterface {
+        this.mode.approved((prod: any): Function => {
+            getProdInfo(prod);
+            return prod.finish();
+        })
+        return this;
+    }
+    cancelled(callback: Function): Vnnative3PurchaseWhenInterface {
+        this.mode.cancelled((prod: any): Function => {
+            return callback(prod);
+        })
+        return this;
+    }
+}
+export class Vnnative3Purchase implements Vnnative3PurchaseInterface {
     plugin: any = window;
     checkPluginConnect(success: Function, error: Function): Function {
         if (this.plugin.store) {
@@ -26,38 +50,11 @@ export default class Vnnative3Purchase implements Vnnative3PurchaseInterface {
             callback(error)
         });
     }
-    hasProduct(getProdInfo: Function): Vnnative3Purchase {
-        this.plugin.store = this.plugin.store.update((data: {
-            title: number | string,
-            state: string,
-            description: string,
-            price: string | number,
-            id: string | number,
-            canPurchase: string | number | boolean
-        }) => {
-            return getProdInfo(data);
-        })
-        return this;
-    }
-    approved(getProdInfo: Function): Vnnative3Purchase {
-        this.plugin.store = this.plugin.store.approved((prod: any) => {
-            getProdInfo(prod);
-            return prod.finish();
-        })
-        return this;
-    }
-    cancelled(callback: Function): Vnnative3Purchase {
-        this.plugin.store = this.plugin.store.cancelled((prod: any): Function => {
-            return callback(prod);
-        })
-        return this;
-    }
     order(product_id: string | number): Vnnative3Purchase {
         this.plugin.store.order(product_id);
         return this;
     }
-    when(product_id: string | number): Vnnative3Purchase {
-        this.plugin.store = this.plugin.store.when(product_id);
-        return this;
+    when(product_id: string | number): Vnnative3PurchaseWhen {
+        return new Vnnative3PurchaseWhen(this.plugin.store.when(product_id));
     }
 }
